@@ -1,0 +1,29 @@
+{
+  "name": "coosos/jms-serializer-bidirectional-relation",
+  "description": "Build mapping for restore bidirectional relation",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Remy",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "php": "^7.1",
+    "jms/serializer": "^1.14|^2.0|^3.0"
+  },
+  "require-dev": {
+    "ext-json": "*",
+    "phpunit/phpunit": "^8.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Coosos\\BidirectionalRelation\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Coosos\\BidirectionalRelation\\Tests\\": "tests/"
+    }
+  }
+}
