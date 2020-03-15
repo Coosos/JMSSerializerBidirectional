@@ -2,8 +2,10 @@
 
 namespace Coosos\BidirectionalRelation\Tests\Model;
 
+use Coosos\BidirectionalRelation\Annotations\ExcludeFromMapping;
 use Coosos\BidirectionalRelation\Annotations\SerializerBidirectionalRelation;
 use JMS\Serializer\Annotation as Serializer;
+use stdClass;
 
 /**
  * Class News
@@ -38,8 +40,18 @@ class News
 
     /**
      * @var array
+     *
+     * @Serializer\Type("array")
      */
     private $simpleArray;
+
+    /**
+     * @var stdClass
+     *
+     * @Serializer\Type("stdClass")
+     * @ExcludeFromMapping()
+     */
+    private $fieldExcludedFromMapping;
 
     /**
      * News constructor.
@@ -48,6 +60,7 @@ class News
     {
         $this->newsTranslations = [];
         $this->simpleArray = ['hello', 'word'];
+        $this->fieldExcludedFromMapping = new stdClass();
     }
 
     /**

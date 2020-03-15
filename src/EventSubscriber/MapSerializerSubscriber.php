@@ -3,6 +3,7 @@
 namespace Coosos\BidirectionalRelation\EventSubscriber;
 
 use ArrayAccess;
+use Coosos\BidirectionalRelation\Annotations\ExcludeFromMapping;
 use Coosos\BidirectionalRelation\Annotations\SerializerBidirectionalRelation;
 use Doctrine\Common\Annotations\AnnotationReader;
 use JMS\Serializer\Context;
@@ -24,8 +25,6 @@ use ReflectionProperty;
  */
 class MapSerializerSubscriber implements EventSubscriberInterface
 {
-    const MAPPING_FIELD_NAME = '_mapping_bidirectional_relation';
-
     /**
      * @var array
      */
@@ -67,7 +66,7 @@ class MapSerializerSubscriber implements EventSubscriberInterface
 
         $visitor = $event->getVisitor();
         $data = [
-            new StaticPropertyMetadata('', self::MAPPING_FIELD_NAME, $currentMappings),
+            new StaticPropertyMetadata('', SerializerBidirectionalRelation::MAPPING_FIELD_NAME, $currentMappings),
             $currentMappings,
         ];
 
@@ -76,20 +75,6 @@ class MapSerializerSubscriber implements EventSubscriberInterface
         }
 
         $visitor->visitProperty(...$data);
-    }
-
-    /**
-     * @param mixed $object
-     *
-     * @return bool
-     * @throws ReflectionException
-     */
-    private function hasSerializerBidirectionalRelationAnnotation($object)
-    {
-        $reader = new AnnotationReader();
-        $annotation = $reader->getClassAnnotation(new ReflectionClass($object), SerializerBidirectionalRelation::class);
-
-        return $annotation ? true : false;
     }
 
     /**
@@ -128,7 +113,8 @@ class MapSerializerSubscriber implements EventSubscriberInterface
 
         foreach ($properties as $property) {
             if (!in_array($property->getName(), array_keys($propertyMetadata))
-                || $propertyMetadata[$property->getName()] instanceof VirtualPropertyMetadata) {
+                || $propertyMetadata[$property->getName()] instanceof VirtualPropertyMetadata
+                || $this->isExcludedFromMapping($object, $property->getName())) {
                 continue;
             }
 
@@ -203,5 +189,39 @@ class MapSerializerSubscriber implements EventSubscriberInterface
         }
 
         return $newMapping;
+    }
+
+    /**
+     * Is excluded from mapping
+     *
+     * @param mixed  $object
+     * @param string $fieldName
+     *
+     * @return bool
+     * @throws ReflectionException
+     */
+    private function isExcludedFromMapping($object, string $fieldName)
+    {
+        $reader = new AnnotationReader();
+        $annotation = $reader->getPropertyAnnotation(
+            new ReflectionProperty($object, $fieldName),
+            ExcludeFromMapping::class
+        );
+
+        return $annotation ? true : false;
+    }
+
+    /**
+     * @param mixed $object
+     *
+     * @return bool
+     * @throws ReflectionException
+     */
+    private function hasSerializerBidirectionalRelationAnnotation($object)
+    {
+        $reader = new AnnotationReader();
+        $annotation = $reader->getClassAnnotation(new ReflectionClass($object), SerializerBidirectionalRelation::class);
+
+        return $annotation ? true : false;
     }
 }

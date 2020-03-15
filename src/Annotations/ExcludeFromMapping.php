@@ -3,15 +3,14 @@
 namespace Coosos\BidirectionalRelation\Annotations;
 
 /**
- * Class SerializerBidirectionalRelation
+ * Class ExcludeFromMapping
  *
  * @package Coosos\BidirectionalRelation\Annotations
  * @author  Remy Lescallier <lescallier1@gmail.com>
  *
  * @Annotation
- * @Target({"CLASS"})
+ * @Target({"PROPERTY"})
  */
-class SerializerBidirectionalRelation
+class ExcludeFromMapping
 {
-    const MAPPING_FIELD_NAME = '_mapping_bidirectional_relation';
 }
