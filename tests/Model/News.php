@@ -138,7 +138,7 @@ class News
      *
      * @return $this
      */
-    private function setNewsTranslatable(NewsTranslation $newsTranslation)
+    protected function setNewsTranslatable(NewsTranslation $newsTranslation)
     {
         $newsTranslation->setNewsTranslatable($this);
 

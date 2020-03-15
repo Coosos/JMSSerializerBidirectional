@@ -58,7 +58,8 @@ class MapDeserializerSubscriber implements EventSubscriberInterface
      */
     public function onPreDeserialize(PreDeserializeEvent $event)
     {
-        if ($event->getContext()->getDepth() === 1 &&
+        if (
+            $event->getContext()->getDepth() === 1 &&
             isset($event->getData()[SerializerBidirectionalRelation::MAPPING_FIELD_NAME])
         ) {
             $this->currentMappings = $event->getData()[SerializerBidirectionalRelation::MAPPING_FIELD_NAME];
@@ -75,7 +76,8 @@ class MapDeserializerSubscriber implements EventSubscriberInterface
     public function onPostDeserialize(ObjectEvent $event)
     {
         $object = $event->getObject();
-        if ($event->getContext()->getDepth() !== 0 ||
+        if (
+            $event->getContext()->getDepth() !== 0 ||
             !$this->hasSerializerBidirectionalRelationAnnotation($object)
         ) {
             return;
@@ -143,7 +145,8 @@ class MapDeserializerSubscriber implements EventSubscriberInterface
                     $object,
                     $this->parseList($propertyValue, $propertyName, $currentMap, $map, $already)
                 );
-            } elseif ($propertyValue === null
+            } elseif (
+                $propertyValue === null
                 && isset($map[$currentMap . ',' . $propertyName])
                 && isset($already[$map[$currentMap . ',' . $propertyName]])
             ) {

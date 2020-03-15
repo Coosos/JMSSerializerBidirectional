@@ -22,6 +22,8 @@ use ReflectionProperty;
  *
  * @package Coosos\BidirectionalRelation\EventSubscriber
  * @author  Remy Lescallier <lescallier1@gmail.com>
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class MapSerializerSubscriber implements EventSubscriberInterface
 {
@@ -52,7 +54,8 @@ class MapSerializerSubscriber implements EventSubscriberInterface
      */
     public function onPostSerialize(ObjectEvent $event)
     {
-        if (!is_object($event->getObject()) ||
+        if (
+            !is_object($event->getObject()) ||
             $event->getContext()->getDepth() !== 0 ||
             !$this->hasSerializerBidirectionalRelationAnnotation($event->getObject())
         ) {
@@ -112,9 +115,11 @@ class MapSerializerSubscriber implements EventSubscriberInterface
         );
 
         foreach ($properties as $property) {
-            if (!in_array($property->getName(), array_keys($propertyMetadata))
+            if (
+                !in_array($property->getName(), array_keys($propertyMetadata))
                 || $propertyMetadata[$property->getName()] instanceof VirtualPropertyMetadata
-                || $this->isExcludedFromMapping($object, $property->getName())) {
+                || $this->isExcludedFromMapping($object, $property->getName())
+            ) {
                 continue;
             }
 

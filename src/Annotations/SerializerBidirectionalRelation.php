@@ -13,5 +13,5 @@ namespace Coosos\BidirectionalRelation\Annotations;
  */
 class SerializerBidirectionalRelation
 {
-    const MAPPING_FIELD_NAME = '_mapping_bidirectional_relation';
+    public const MAPPING_FIELD_NAME = '_mapping_bidirectional_relation';
 }
