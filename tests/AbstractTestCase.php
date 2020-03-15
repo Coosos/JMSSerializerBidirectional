@@ -2,6 +2,7 @@
 
 namespace Coosos\BidirectionalRelation\Tests;
 
+use Coosos\BidirectionalRelation\EventSubscriber\MapDeserializerSubscriber;
 use Coosos\BidirectionalRelation\EventSubscriber\MapSerializerSubscriber;
 use Coosos\BidirectionalRelation\Tests\Model\News;
 use Coosos\BidirectionalRelation\Tests\Model\NewsTranslation;
@@ -34,6 +35,7 @@ abstract class AbstractTestCase extends TestCase
         $builder = SerializerBuilder::create();
         $builder->configureListeners(function (EventDispatcher $dispatcher) {
             $dispatcher->addSubscriber(new MapSerializerSubscriber());
+            $dispatcher->addSubscriber(new MapDeserializerSubscriber());
         });
 
         $this->jmsSerializer = $builder->build();
