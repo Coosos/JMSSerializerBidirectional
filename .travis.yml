@@ -1,0 +1,27 @@
+language: php
+cache:
+    directories:
+        - $HOME/.composer/cache/files
+
+php:
+    - 7.2
+    - 7.3
+    - 7.4
+
+env:
+    - JMS_SERIALIZER=1.*
+    - JMS_SERIALIZER=2.*
+    - JMS_SERIALIZER=3.*
+
+matrix:
+    exclude:
+        - php: 7.4
+          env: JMS_SERIALIZER=2.* # Excluded because SerializationContext throw exception deprecated
+
+before_script:
+    - curl -s http://getcomposer.org/installer | php
+    - php composer.phar require jms/serializer:${JMS_SERIALIZER} --no-update
+    - COMPOSER_MEMORY_LIMIT=-1 php composer.phar update --no-interaction
+
+script:
+    - php composer.phar run-test-suite
