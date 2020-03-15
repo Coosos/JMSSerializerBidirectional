@@ -13,6 +13,11 @@ env:
     - JMS_SERIALIZER=2.*
     - JMS_SERIALIZER=3.*
 
+matrix:
+    exclude:
+        - php: 7.4
+          env: JMS_SERIALIZER=2.* # Excluded because SerializationContext throw exception deprecated
+
 before_script:
     - curl -s http://getcomposer.org/installer | php
     - php composer.phar require jms/serializer:${JMS_SERIALIZER} --no-update
