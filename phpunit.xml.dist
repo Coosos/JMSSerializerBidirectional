@@ -8,4 +8,7 @@
             <directory>tests/</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <ini name="error_reporting" value="-16385"/>
+    </php>
 </phpunit>
