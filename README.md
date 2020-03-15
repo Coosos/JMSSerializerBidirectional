@@ -8,7 +8,7 @@ This mapping is add to your serialized content with ``_mapping_bidirectional_rel
 
 ## Install
 
-### With jms/serializer (without symfony or other framework who dispatch event with a config)
+### With jms/serializer (without symfony)
 
 ```php
 use JMS\Serializer\SerializerBuilder;
